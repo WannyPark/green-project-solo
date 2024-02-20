@@ -90,9 +90,12 @@ const Signup = () => {
         await axios.post("/api/mem/sign_up", data)
         .then(res => {
             console.log(res);
-            if (res == 1) {
+            if (res.data == 1) {
                 alert("회원가입에 성공하였습니다. 로그인 해주세요 ~");
                 window.location.href = "/login";
+            } else {
+                alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+                window.location.reload();
             }
         });
     }

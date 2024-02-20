@@ -25,6 +25,10 @@
     padding: 5px;
 }
 
+.login_inputid:focus, .login_inputpw:focus {
+    outline: 1px solid grey;
+}
+
 .login_buttons {
     display: flex;
     flex-direction: column;

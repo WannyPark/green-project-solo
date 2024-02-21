@@ -6,14 +6,21 @@
     background-color: gainsboro;
 }
 
-.nav_logo {
-    margin-left: 10%;
-    cursor: pointer;
+.nav_logo_area {
+    display: flex;
+    align-items: center;
+    margin-left: 5%;
 }
 
-.nav_logo img {
+.nav_logo {
     width: 150px;
     height: auto;
+    cursor: pointer;
+    margin-right: 30px;
+}
+
+.nav_links_board {
+    cursor: pointer;
 }
 
 .nav_links {

@@ -5,6 +5,7 @@ import About from './pages/About';
 import Join from './pages/Join';
 import Login from './pages/Login';
 import User from './pages/User';
+import Admin from './pages/Admin';
 import LoginContextProvider from './contexts/LoginContextProvider';
 
 function App() {
@@ -13,10 +14,11 @@ function App() {
       <LoginContextProvider>
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="/loginPage" element={<Login />}></Route>
           <Route path="/join" element={<Join />}></Route>
           <Route path="/user" element={<User />}></Route>
           <Route path="/about" element={<About />}></Route>
+          <Route path="/admin" element={<Admin />}></Route>
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>

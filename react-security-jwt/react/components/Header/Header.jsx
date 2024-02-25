@@ -21,14 +21,16 @@ const Header = () => {
                     !isLogin ? 
                     // 비로그인 시
                     <ul>
-                        <li><Link to="/login">로그인</Link></li>
+                        <li><Link to="/loginPage">로그인</Link></li>
                         <li><Link to="/join">회원가입</Link></li>
                         <li><Link to="/about">소개</Link></li>
+                        <li><Link to="/admin">관리자</Link></li>
                     </ul>
                     :
                     // 로그인 시
                     <ul>
                         <li><Link to="/user">마이페이지</Link></li>
+                        <li><Link to="/admin">관리자</Link></li>
                         <li><button className="link" onClick={logout}>로그아웃</button></li>
                     </ul>
                 }

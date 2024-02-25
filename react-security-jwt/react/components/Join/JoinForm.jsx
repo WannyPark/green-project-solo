@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import * as auth from "../../apis/auth";
 import { useNavigate } from "react-router-dom";
+import * as Swal from "../../apis/alert";
 
 const JoinForm = () => {
 
@@ -31,14 +32,16 @@ const JoinForm = () => {
             console.log(response.data);
             if (status == 200) {
                 console.log("회원가입 성공 !");
-                alert("회원가입 성공 !");
-                navigate("/login");
+                Swal.alert(`회원가입 성공`, `로그인 화면으로 이동합니다.`, `success`, () => {navigate("/loginPage")});
+                // alert("회원가입 성공 !");
+                // navigate("/login");
             } else {
                 console.log("회원가입 실패 !")
-                alert("회원가입 실패 !");
+                Swal.alert(`회원가입 실패`, `회원가입에 실패하였습니다.`, `error`);
+                // alert("회원가입 실패 !");
             }
         } catch (error) {
-            alert("회원가입 실패 !");
+            Swal.alert(`회원가입 실패`, `회원가입에 실패하였습니다.`, `error`);
             return ;
         }
     }

@@ -3,6 +3,7 @@ import api from "../apis/api";
 import Cookies from "js-cookie";
 import * as auth from "../apis/auth";
 import { useNavigate } from "react-router-dom";
+import * as Swal from "../apis/alert";
 
 export const LoginContext = createContext();
 LoginContext.displayName = "LoginContextName";
@@ -108,15 +109,17 @@ const LoginContextProvider = ({ children }) => {
                 // 로그인 체크 (/users/{userId} <--- userData)
                 loginCheck();
 
-                alert(`로그인 성공`);
+                // alert(`로그인 성공`);
+                Swal.alert(`로그인 성공`, `메인 화면으로 갑니다.`, `success`, () => {navigate("/")});
 
                 // 메인 페이지로 이동
-                navigate("/");
+                // navigate("/");
             }
         } catch (error) {
             // 로그인 실패
             // - 아이디 또는 비밀번호가 일치하지 않습니다.
-            alert("로그인 실패 !");
+            // alert("로그인 실패 !");
+            Swal.alert(`로그인 실패`, `아이디 또는 비밀번호가 일치하지 않습니다.`, `error`);
         }
 
     }
@@ -153,15 +156,30 @@ const LoginContextProvider = ({ children }) => {
     }
 
     // 로그아웃
-    const logout = () => {
-        const check = window.confirm(`로그아웃 하시겠습니까 ?`);
-
-        if (check) {
-            // 로그아웃 세팅
+    const logout = (force=false) => {
+        if (force) {
             logoutSetting();
-            // 메인 페이지 이동
             navigate("/");
+            return ;
         }
+
+        Swal.confirm(`로그아웃 하시겠습니까?`, `로그아웃을 진행합니다.`, `warning`, (result) => {
+            if (result.isConfirmed) {
+                // 로그아웃 세팅
+                logoutSetting();
+                // 메인 페이지 이동
+                navigate("/");
+            }
+        })
+
+        // const check = window.confirm(`로그아웃 하시겠습니까 ?`);
+
+        // if (check) {
+        //     // 로그아웃 세팅
+        //     logoutSetting();
+        //     // 메인 페이지 이동
+        //     navigate("/");
+        // }
     }
 
     // 로그아웃 세팅
@@ -188,7 +206,7 @@ const LoginContextProvider = ({ children }) => {
     }, [])
 
     return (
-            <LoginContext.Provider value={{isLogin, userInfo, roles, login, logout}}>
+            <LoginContext.Provider value={{isLogin, userInfo, roles, login, loginCheck, logout}}>
                 {children}
             </LoginContext.Provider>
     )

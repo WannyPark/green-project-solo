@@ -40,6 +40,7 @@
     background-color: #F17F42;
     cursor: pointer;
     transition: all 0.5s;
+    padding: 5px;
 }
 
 .nav_login_button:hover {
@@ -52,11 +53,12 @@
     justify-content: center;
     align-items: center;
     width: auto;
-    height: 40px;
+    height: 30px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.5s;
+    padding: 5px;
 }
 
 .nav_button:hover {

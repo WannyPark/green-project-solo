@@ -31,7 +31,8 @@
 .myInfo_pw_area small,
 .myInfo_name_area small,
 .myInfo_email_area small {
-    color: red;
+    margin-top: 5px;
+    color: black;
 }
 
 .myInfo_id_area input,

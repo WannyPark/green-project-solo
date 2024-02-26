@@ -1,20 +1,23 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from "./components/Home";
-import Login from "./components/Login";
-import Logout from "./components/Logout";
-import Signup from "./components/Signup";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import LoginContextProvider from "./contexts/LoginContextProvider";
+import Signup from './pages/Signup';
+import MyInfo from "./pages/MyInfo";
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/sign_up" element={<Signup />} />
-        </Routes>
+        <LoginContextProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/loginPage" element={<Login />} />
+            <Route path="/signUp" element={<Signup />} />
+            <Route path="/myInfo" element={<MyInfo />} />
+          </Routes>
+        </LoginContextProvider>
       </Router>
     </div>
   );

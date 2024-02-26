@@ -1,0 +1,76 @@
+.signup_form {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 700px;
+    border-radius: 15px;
+    background-color: #F17F42;
+    box-shadow: 0 15px 15px rgba(0,0,0,0.12), 0 15px 15px rgba(0,0,0,0.24);
+}
+
+.signup_form div {
+    margin: 10px;
+}
+
+.signup_title {
+    color: #FFEEE4;
+}
+
+.signup_id_area,
+.signup_pw_area,
+.signup_name_area,
+.signup_email_area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup_id_area small,
+.signup_pw_area small,
+.signup_name_area small,
+.signup_email_area small {
+    color: red;
+}
+
+.signup_id_area input,
+.signup_pw_area input,
+.signup_name_area input,
+.signup_email_area input {
+    margin-bottom: 5px;
+    border: none;
+    outline: none;
+    background-color: #FFEEE4;
+    outline: none;
+    width: 250px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 5px;
+    transition: all 0.5s;
+}
+
+.signup_id_area input:focus,
+.signup_pw_area input:focus,
+.signup_name_area input:focus,
+.signup_email_area input:focus {
+    box-shadow: 0 10px 10px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.24);
+}
+
+.signup_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #CE6D39;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.signup_button:hover {
+    box-shadow: 0 10px 10px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.24);
+}

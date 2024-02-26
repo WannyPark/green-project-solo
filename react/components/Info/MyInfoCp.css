@@ -1,0 +1,76 @@
+.myInfo_form {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 700px;
+    border-radius: 15px;
+    background-color: #F17F42;
+    box-shadow: 0 15px 15px rgba(0,0,0,0.12), 0 15px 15px rgba(0,0,0,0.24);
+}
+
+.myInfo_form div {
+    margin: 10px;
+}
+
+.myInfo_title {
+    color: #FFEEE4;
+}
+
+.myInfo_id_area,
+.myInfo_pw_area,
+.myInfo_name_area,
+.myInfo_email_area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.myInfo_id_area small,
+.myInfo_pw_area small,
+.myInfo_name_area small,
+.myInfo_email_area small {
+    color: red;
+}
+
+.myInfo_id_area input,
+.myInfo_pw_area input,
+.myInfo_name_area input,
+.myInfo_email_area input {
+    margin-bottom: 5px;
+    border: none;
+    outline: none;
+    background-color: #FFEEE4;
+    outline: none;
+    width: 250px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 5px;
+    transition: all 0.5s;
+}
+
+.myInfo_id_area input:focus,
+.myInfo_pw_area input:focus,
+.myInfo_name_area input:focus,
+.myInfo_email_area input:focus {
+    box-shadow: 0 10px 10px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.24);
+}
+
+.myInfo_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #CE6D39;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.myInfo_button:hover {
+    box-shadow: 0 10px 10px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.24);
+}

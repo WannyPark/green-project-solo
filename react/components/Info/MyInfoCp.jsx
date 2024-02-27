@@ -19,6 +19,18 @@ const MyInfoCp = () => {
     const navigate = useNavigate();
 
     const changePw = async () => {
+        if ($("#myInfo_newPw").val() != $("myInfo_newPw_check").val()) {
+            Swal.alert("비밀번호 변경 실패 !", "새로운 비밀번호가 일치하지 않습니다.", "error");
+            return ;
+        }
+        if (checkOldPw || checkNewPw || checkEqPw) {
+            Swal.alert("비밀번호 변경 실패 !", "비밀번호 형식을 맞춰주세요.", "error");
+            return ;
+        }
+        if ($("#myInfo_oldPw").val() == $("#myInfo_newPw").val()) {
+            Swal.alert("비밀번호 변경 실패 !", "현재 비밀번호와 새 비밀번호가 동일합니다. 다르게 작성해주세요.", "error");
+            return ;
+        }
         const response = await auth.update({
             no: userNo,
             oldPw: $("#myInfo_oldPw").val(),
@@ -32,7 +44,7 @@ const MyInfoCp = () => {
                 navigate("/loginPage")
             });
         } else {
-            Swal.alert("비밀번호 변경 실패 !", "제대로 된 암호를 설정 해주세요.", "error");
+            Swal.alert("비밀번호 변경 실패 !", "다시 시도해주세요.", "error");
         }
     }
 
@@ -54,6 +66,10 @@ const MyInfoCp = () => {
         } else {
             $("#myInfo_newPw").css("outline", "3px solid green");
             setCheckNewPw(false);
+        }
+        if ($("#myInfo_newPw").val() != $("#myInfo_newPw_check").val()) {
+            $("#myInfo_newPw_check").css("outline", "3px solid red");
+            setCheckEqPw(true);
         }
     }
     const check_eq_pw = () => { // 비밀번호 동일한지 검사
@@ -98,11 +114,11 @@ const MyInfoCp = () => {
                 </div>
                 <div className="myInfo_pw_area">
                     <input type="password" id="myInfo_oldPw" name="myInfo_pw" placeholder="Old Password" onChange={() => {check_oldPw()}} />
-                    {checkOldPw && <small>비밀번호는 영어 대문자 + 소문자 + 숫자 + 특수문자로 구성 되어있습니다.</small>}
+                    {checkOldPw && <small>비밀번호는 영어 대문자 + 소문자 + 숫자 + 특수문자로 구성 되어있습니다. (8~16자)</small>}
                 </div>
                 <div className="myInfo_pw_area">
                     <input type="password" id="myInfo_newPw" name="myInfo_pw" placeholder="New Password" onChange={() => {check_newPw()}} />
-                    {checkNewPw && <small>비밀번호는 영어 대문자 + 소문자 + 숫자 + 특수문자로 구성 되야합니다.</small>}
+                    {checkNewPw && <small>비밀번호는 영어 대문자 + 소문자 + 숫자 + 특수문자로 작성해주세요. (8~16자)</small>}
                 </div>
                 <div className="myInfo_pw_area">
                     <input type="password" id="myInfo_newPw_check" name="myInfo_pw_check" placeholder="Check New Password" onChange={() => {check_eq_pw()}} />

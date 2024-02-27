@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 500px;
+    width: 600px;
     height: 700px;
     border-radius: 15px;
     background-color: #F17F42;
@@ -32,7 +32,7 @@
 .myInfo_name_area small,
 .myInfo_email_area small {
     margin-top: 5px;
-    color: black;
+    color: red;
 }
 
 .myInfo_id_area input,

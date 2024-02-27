@@ -1,0 +1,223 @@
+.rboard_show_page {
+    box-sizing: border-box;
+    position: absolute;
+    width: 500px;
+    height: 700px;
+    background-color: #F17F42;
+    z-index: 10;
+    border-radius: 20px;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.rboard_show_top {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+.rboard_show_top img {
+    border-top-left-radius: 19px;
+    border-top-right-radius: 19px;
+    width: 100%;
+    height: 100%;
+}
+
+.rboard_show_close,
+.rboard_write_close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+    background-color: #F17F42;
+    color: white;
+    transition: all 0.5s;
+}
+
+.rboard_write_page {
+    box-sizing: border-box;
+    position: absolute;
+    width: 500px;
+    height: 700px;
+    background-color: #F17F42;
+    z-index: 10;
+    border-radius: 20px;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.rboard_show_close:hover,
+.rboard_write_close:hover {
+    scale: 1.2;
+}
+
+.rboard_container {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    width: 100%;
+}
+
+.rboard_list {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 800px;
+}
+
+.rboard_list_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rboard_item {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 30px;
+    cursor: pointer;
+    transition: all 1s;
+}
+
+.rboard_item:hover {
+    scale: 1.2;
+}
+
+.rboard_item img {
+    width: 250px;
+    height: 250px;
+    transition: all 1s ;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.rboard_item h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.rboard_list_add_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.rboard_item_plus_bnt button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #F17F42;
+    cursor: pointer;
+    transition: all 0.5s;
+    padding: 5px;
+}
+
+.rboard_item_plus_bnt button:hover {
+    background-color: #CE6D39;
+    box-shadow: 0 0 10px rgba(0,0,0,0.12), 0 0 10px rgba(0,0,0,0.24);
+}
+
+.rboard_menu {
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 250px;
+    width: 20%;
+    height: 450px;
+    background-color: #F17F42;
+    border-radius: 20px;
+    transition: all 0.5s;
+    box-shadow: 0 0 10px rgba(0,0,0,0.12), 0 0 10px rgba(0,0,0,0.24);
+}
+
+.rboard_menu:hover {
+    box-shadow: 0 0 20px rgba(0,0,0,0.12), 0 0 20px rgba(0,0,0,0.24);
+}
+
+.rboard_menu_input {
+    width: 220px;
+    height: 40px;
+    padding: 5px;
+    margin: 20px;
+    border-radius: 10px;
+    border: 2px solid #CE6D39;
+    transition: all 0.5s;
+}
+
+.rboard_menu_input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.12), 0 0 10px rgba(0,0,0,0.24);
+}
+
+.rboard_menu_loc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rboard_menu_loc #sido1,
+.rboard_menu_loc #gugun1 {
+    position: relative;
+    width: 150px;
+    height: 35px;
+    border-radius: 4px;
+    border: 2px solid #CE6D39;
+    outline: none;
+    margin: 10px;
+    transition: all 0.5;
+}
+
+.rboard_menu_loc #sido1:focus,
+.rboard_menu_loc #gugun1:focus {
+    box-shadow: 0 0 10px rgba(0,0,0,0.12), 0 0 10px rgba(0,0,0,0.24);
+}
+
+.rboard_menu_loc #sido1 option,
+.rboard_menu_loc #gugun1 option {
+    background: #F17F42;
+    color: #fff;
+    padding: 3px 0;
+    font-size: 16px;
+}
+
+.rboard_menu_search,
+.rboard_list_add_button button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #CE6D39;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.rboard_menu_search:hover,
+.rboard_list_add_button button:hover {
+    box-shadow: 0 0 5px rgba(0,0,0,0.12), 0 0 5px rgba(0,0,0,0.24);
+}

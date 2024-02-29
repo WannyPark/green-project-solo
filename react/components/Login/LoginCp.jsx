@@ -19,6 +19,12 @@ const LoginCp = () => {
         login(id, pw);
     }
 
+    const pressEnter = (e) => {
+        if (e.key === 'Enter') {
+            reqLogin();
+        }
+    }
+
     useEffect(() => {
         const cookie = Cookie.get("accessToken");
         if (cookie != null) {
@@ -35,10 +41,10 @@ const LoginCp = () => {
                     <h2>Login</h2>
                 </div>
                 <div className="login_id_area">
-                    <input type="text" id="login_id" name="login_id" placeholder="ID" />
+                    <input type="text" id="login_id" name="login_id" placeholder="ID" onKeyDown={(e) => {pressEnter(e)}} />
                 </div>
                 <div className="login_pw_area">
-                    <input type="password" id="login_pw" name="login_pw" placeholder="Password" />
+                    <input type="password" id="login_pw" name="login_pw" placeholder="Password" onKeyDown={(e) => {pressEnter(e)}} />
                 </div>
                 <div className="login_button_area">
                     <input type="button" className="login_button" value="로 그 인" onClick={() => reqLogin()} />

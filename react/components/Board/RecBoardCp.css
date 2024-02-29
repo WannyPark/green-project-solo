@@ -100,8 +100,15 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.12), 0 0 10px rgba(0,0,0,0.24);
 }
 
+.rboard_write_file {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .rboard_write_upload_button {
-    margin-left: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -119,13 +126,33 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.12), 0 0 10px rgba(0,0,0,0.24);
 }
 
-.rboard_write_file {
-    width: 100%;
-    height: 50px;
+.rboard_write_file input {
+    display: none;
 }
 
-.rboard_write_file input {
-    visibility: hidden;
+.rboard_write_file #sido1,
+.rboard_write_file #gugun1 {
+    position: relative;
+    width: 150px;
+    height: 35px;
+    border-radius: 4px;
+    border: 2px solid #CE6D39;
+    outline: none;
+    margin: 10px;
+    transition: all 0.5;
+}
+
+.rboard_write_file #sido1:focus,
+.rboard_write_file #gugun1:focus {
+    box-shadow: 0 0 10px rgba(0,0,0,0.12), 0 0 10px rgba(0,0,0,0.24);
+}
+
+.rboard_write_file #sido1 option,
+.rboard_write_file #gugun1 option {
+    background: #F17F42;
+    color: #fff;
+    padding: 3px 0;
+    font-size: 16px;
 }
 
 .rboard_write_show_pics {
@@ -318,7 +345,7 @@
     align-items: center;
 }
 
-.rboard_menu_loc #sido1,
+.rboard_menu_loc #sido2,
 .rboard_menu_loc #gugun1 {
     position: relative;
     width: 150px;
@@ -330,12 +357,12 @@
     transition: all 0.5;
 }
 
-.rboard_menu_loc #sido1:focus,
+.rboard_menu_loc #sido2:focus,
 .rboard_menu_loc #gugun1:focus {
     box-shadow: 0 0 10px rgba(0,0,0,0.12), 0 0 10px rgba(0,0,0,0.24);
 }
 
-.rboard_menu_loc #sido1 option,
+.rboard_menu_loc #sido2 option,
 .rboard_menu_loc #gugun1 option {
     background: #F17F42;
     color: #fff;

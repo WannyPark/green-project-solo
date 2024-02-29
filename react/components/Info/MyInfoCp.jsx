@@ -12,13 +12,14 @@ const MyInfoCp = () => {
     const {loginCheck, logout} = useContext(LoginContext);
 
     const [userNo, setUserNo] = useState("");
+    const [userId, setUserId] = useState("");
     const [checkOldPw, setCheckOldPw] = useState(false);
     const [checkNewPw, setCheckNewPw] = useState(false);
     const [checkEqPw, setCheckEqPw] = useState(false);
 
     const navigate = useNavigate();
 
-    const changePw = async () => {
+    const changePw = async () => { // 비밀번호 변경
         if ($("#myInfo_newPw").val() != $("myInfo_newPw_check").val()) {
             Swal.alert("비밀번호 변경 실패 !", "새로운 비밀번호가 일치하지 않습니다.", "error");
             return ;
@@ -46,6 +47,10 @@ const MyInfoCp = () => {
         } else {
             Swal.alert("비밀번호 변경 실패 !", "다시 시도해주세요.", "error");
         }
+    }
+
+    const deleteUser = () => { // 회원 탈퇴
+
     }
 
     const check_oldPw = () => { // 기존 비밀번호 유효성 검사
@@ -93,6 +98,7 @@ const MyInfoCp = () => {
             await loginCheck();
             const response = await auth.info();
             setUserNo(response.data.no);
+            setUserId(response.data.userId);
             const userId = response.data.userId;
             const userName = response.data.name;
             const userEmail = response.data.email;
@@ -132,6 +138,9 @@ const MyInfoCp = () => {
                 </div>
                 <div className="myInfo_button_area">
                     <input type="button" className="myInfo_button" value="변 경" onClick={() => {changePw()}} />
+                </div>
+                <div className="myInfo_button_area">
+                    <input type="button" className="myInfo_delete_button" value="회원탈퇴" onClick={() => {deleteUser()}} />
                 </div>
             </div>
         </>

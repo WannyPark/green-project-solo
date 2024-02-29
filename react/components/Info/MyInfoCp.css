@@ -75,3 +75,21 @@
 .myInfo_button:hover {
     box-shadow: 0 10px 10px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.24);
 }
+
+.myInfo_delete_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: red;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.myInfo_delete_button:hover {
+    box-shadow: 0 10px 10px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.24);
+}

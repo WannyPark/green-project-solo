@@ -2,11 +2,13 @@ import $ from "jquery";
 import { SelectBox } from "../Select/SelectBox";
 import { useContext, useEffect, useState } from "react";
 import { LoginContext } from "../../contexts/LoginContextProvider";
+import * as auth from "../../apis/auth";
+import * as Swal from "../../apis/alert";
 import "./RecBoardCp.css";
 
 const RecBoardCp = () => {
 
-    const {isLogin} = useContext(LoginContext)
+    const {isLogin, userInfo} = useContext(LoginContext)
 
     const addItem = () => {
         const height = $(".rboard_list").height();
@@ -108,11 +110,48 @@ const RecBoardCp = () => {
         $("body").css("overflow", ""); // 스크롤 방지 해제
         $("#rboard_write_t").val("");
         $("#rboard_write_d").val("");
+        $("#sido1").find('option:first').prop('selected', true);
+        $(".write_gugun option").remove();
+        $(".write_gugun").append("<option value=''>구/군 선택</option>");
         setPostImg([]);
         setPreviewImg([]);
         setImageNum(0);
     }
     // 글 작성 창 열기 / 닫기 -------------------------------//
+
+    // 글 등록 ---------------------------------
+    const write_new_board = async () => { // 글 작성 요청 함수
+        let response = null;
+        const data = {
+            "userNo": userInfo.no,
+            "boardTitle": $("#rboard_write_t").val(),
+            "boardDesc": $("#rboard_write_d").val(),
+            "boardLoc1": $("#sido1").val(),
+            "boardLoc2": $(".write_gugun").val(),
+        }
+        try {
+            response = await auth.boardWrite(data);
+            const statusUpload = response.status;
+            const boardNo = response.data; // 이미지 등록 실패시 게시물 삭제 요청
+            if (statusUpload == 200) { // 글 등록 성공시 이미지 등록 요청
+                const formData = new FormData();
+                formData.append("files", postImg);
+                response = await auth.boardImgWrite(formData);
+                const statusImgUpload = response.status;
+                closeWrite();
+                if (statusImgUpload == 200) {
+                    Swal.alert("글 작성 성공!", "글 작성에 성공했습니다.", "success");
+                    return ;
+                } else {
+                    // 이미지 등록 실패시 글 삭제 요청
+                }
+            }
+        } catch {
+            Swal.alert("글 작성 실패!", "다시 시도해주세요.", "error");
+            return ;
+        }
+    }
+    // 글 등록 ---------------------------------//
 
     useEffect(() => {
         SelectBox();
@@ -140,6 +179,8 @@ const RecBoardCp = () => {
                 <div className="rboard_write_file">
                     <label htmlFor="uploadFile" className="rboard_write_upload_button">사진 등록</label>
                     <input type="file" id="uploadFile" accept="image/*" multiple onChange={uploadFile} />
+                    <select name="sido1" id="sido1"></select>
+                    <select name="gugun1" id="gugun1" className="write_gugun"></select>
                 </div>
                 <div className="rboard_write_show_pics">
                     <button onClick={prevImage} disabled={!imageNum} className="rboard_write_pics_button">이전</button>
@@ -151,7 +192,7 @@ const RecBoardCp = () => {
                     <button onClick={nextImage} disabled={postImg.length == 0 || postImg.length-1 == imageNum} className="rboard_write_pics_button">다음</button>
                 </div>
                 <div className="rboard_write_button">
-                    <input type="button" value="글 작성" />
+                    <input type="button" value="글 작성" onClick={() => {write_new_board()}} />
                 </div>
             </div>
             <div className="rboard_container">
@@ -196,8 +237,8 @@ const RecBoardCp = () => {
                         <input type="text" className="rboard_menu_input" placeholder="작성자를 입력해주세요." />
                     </div>
                     <div className="rboard_menu_loc">
-                        <select name="sido1" id="sido1"></select>
-                        <select name="gugun1" id="gugun1"></select>
+                        <select name="sido1" id="sido2"></select>
+                        <select name="gugun1" id="gugun1" className="menu_gugun"></select>
                         <input type="button" className="rboard_menu_search" value="검색" />
                     </div>
                     {

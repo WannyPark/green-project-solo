@@ -29,3 +29,24 @@ export const remove = async (userId) => {
     const response = await api.delete(`/api/users/${userId}`);
     return response;
 }
+
+// 게시물 등록
+export const boardWrite = async (data) => {
+    const response = await api.post(`/api/board/write`, data);
+    return response;
+}
+
+// 게시물 사진 등록
+export const boardImgWrite = async (data) => {
+    const response = await api.post(`/api/board/imgWrite`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    });
+    return response;
+}
+
+// 게시물 삭제 요청
+export const boardDelete = async () => {
+    
+}

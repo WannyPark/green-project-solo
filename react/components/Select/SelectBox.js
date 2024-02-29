@@ -31,6 +31,15 @@ export const SelectBox = () => {   // 시/도/군/구 selectBOX 생성함수
             $selsido.next().append("<option value=''>구/군 선택</option>");
         }        
     });
+    $("#sido2").each(function(i, item) {
+        if(i == 0){
+            let $selsido = $(this);
+            $.each(eval(area0), function() {
+                $selsido.append("<option value='"+this+"'>"+this+"</option>");
+            });
+            $selsido.next().append("<option value=''>구/군 선택</option>");
+        }        
+    });
     
     // 시/도 선택시 구/군 설정
     $("select[name^=sido]").change(function(e) {

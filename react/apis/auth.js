@@ -30,6 +30,12 @@ export const remove = async (userId) => {
     return response;
 }
 
+// 게시물 요청 (검색 x)
+export const getBoard = async (page) => {
+    const response = await api.get(`/api/board/get?page=${page}`);
+    return response;
+}
+
 // 게시물 등록
 export const boardWrite = async (data) => {
     const response = await api.post(`/api/board/write`, data);
@@ -46,7 +52,32 @@ export const boardImgWrite = async (data) => {
     return response;
 }
 
+// 게시글 자세히 보기
+export const boardInfo = async (boardNo) => {
+    const response = await api.get(`/api/board/getInfo?boardNo=${boardNo}`);
+    return response;
+}
+
+// 게시글 이미지 요청
+export const boardImages = async (boardNo) => {
+    const response = await api.get(`/api/board/getImages?boardNo=${boardNo}`);
+    return response;
+}
+
+// 게시글 좋아요 클릭
+export const boardLike = async (boardNo, userNo) => {
+    const response = await api.get(`/api/board/like?boardNo=${boardNo}&userNo=${userNo}`);
+    return response;
+}
+
+// 좋아요 누른 게시글
+export const userLikeBoards = async (userId) => {
+    const response = await api.get(`/api/board/likeBoard?id=${userId}`);
+    return response;
+}
+
 // 게시물 삭제 요청
-export const boardDelete = async () => {
-    
+export const boardDelete = async (boardNo) => {
+    const response = await api.delete(`/api/board/${boardNo}`);
+    return response;
 }

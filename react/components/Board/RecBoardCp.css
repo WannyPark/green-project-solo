@@ -24,6 +24,95 @@
     height: 100%;
 }
 
+.rboard_show_title,
+.rboard_show_desc,
+.rboard_show_buts {
+    padding: 10px;
+}
+
+.rboard_show_t {
+    box-sizing: border-box;
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    padding: 5px;
+    transition: all 0.5s;
+}
+
+.rboard_show_d {
+    box-sizing: border-box;
+    width: 480px;
+    height: 250px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    padding: 5px;
+    transition: all 0.5s;
+    resize: none;
+}
+
+.rboard_show_buts {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+}
+
+.rboard_show_like,
+.rboard_show_modi,
+.rboard_show_delete {
+    border: none;
+    background-color: #FFEEE4;
+    margin: 10px;
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.rboard_show_like:disabled {
+    background-color: pink;
+}
+
+.rboard_show_like:hover,
+.rboard_show_modi:hover,
+.rboard_show_delete:hover {
+    scale: 1.2;
+}
+
+.rboard_show_nextImg,
+.rboard_show_prevImg {
+    position: absolute;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+    background-color: #F17F42;
+    color: white;
+    transition: all 0.5s;
+}
+
+.rboard_show_nextImg:disabled,
+.rboard_show_prevImg:disabled {
+    opacity: 0.5;
+}
+
+.rboard_show_nextImg {
+    top: 150px;
+    right: 10px;
+}
+
+.rboard_show_prevImg {
+    top: 150px;
+    left: 10px;
+}
+
 .rboard_show_close,
 .rboard_write_close {
     position: absolute;
@@ -240,7 +329,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 800px;
+    height: 0px;
 }
 
 .rboard_list_item {

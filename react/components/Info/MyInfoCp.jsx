@@ -20,7 +20,7 @@ const MyInfoCp = () => {
     const navigate = useNavigate();
 
     const changePw = async () => { // 비밀번호 변경
-        if ($("#myInfo_newPw").val() != $("myInfo_newPw_check").val()) {
+        if ($("#myInfo_newPw").val() != $("#myInfo_newPw_check").val()) {
             Swal.alert("비밀번호 변경 실패 !", "새로운 비밀번호가 일치하지 않습니다.", "error");
             return ;
         }
@@ -49,8 +49,20 @@ const MyInfoCp = () => {
         }
     }
 
-    const deleteUser = () => { // 회원 탈퇴
-
+    const deleteUser = async () => { // 회원 탈퇴
+        Swal.confirm(`회원탈퇴를 진행할까요 ?`, `회원탈퇴를 진행합니다.`, `warning`, async (result) => {
+            if (result.isConfirmed) {
+                const response = await auth.remove(userId);
+                if (response.status == 200) {
+                    Swal.alert("회원탈퇴 성공", "회원탈퇴가 정상적으로 처리되었습니다.", "success", () => {
+                        logout(true);
+                        navigate("/");
+                    });
+                } else {
+                    Swal.alert("회원탈퇴 실패", "다시 시도해주세요.", "error");
+                }
+            }
+        })
     }
 
     const check_oldPw = () => { // 기존 비밀번호 유효성 검사

@@ -11,6 +11,7 @@ const RecBoardCp = () => {
     const {isLogin, userInfo} = useContext(LoginContext);
     const [showImgs, setShowImgs] = useState([]);
     const [showImgInd, setShowImgInd] = useState(0);
+    const [picImgInd, setPicImgInd] = useState(0);
     const [showBoardNum, setShowBoardNum] = useState(0);
     const [showBoardLike, setShowBoardLike] = useState(0);
     const [page, setPage] = useState(0);
@@ -18,21 +19,30 @@ const RecBoardCp = () => {
     // 글 자세히 보기 ---------------------------------
     const showBoard = async (num) => { // 글 눌렀을 때 실행되는 함수
         console.log(num);
+        console.log(isLogin);
+        console.log(userInfo);
         setShowBoardNum(num);
         const response = await auth.boardInfo(num);
         const resImgs = await auth.boardImages(num);
         let likeBoards;
         if (isLogin) {
+            console.log("좋아요 가져오기!!");
             likeBoards = await auth.userLikeBoards(userInfo.no);
+            console.log(likeBoards);
             for (let i = 0; i < likeBoards.data.length; i++) {
                 if (likeBoards.data[i].boardNo == num) {
                     $(".rboard_show_like").attr("disabled", true);
                     break ;
                 }
             }
+            if (response.data.userNo != userInfo.no) {
+                $(".rboard_show_modi").css("display", "none");
+                $(".rboard_show_delete").css("display", "none");
+            }
         }
         if (response.status != 200 || resImgs.status != 200) {
             Swal.alert("게시물 로드 실패 !", "게시물을 불러오는데 실패했습니다.", "error");
+            closeShow();
             return ;
         }
         if (resImgs.data.length > 0) {
@@ -107,22 +117,24 @@ const RecBoardCp = () => {
         fileRead.readAsDataURL(fileArr[0]);
     };
     const prevImage = () => {
+        setPicImgInd(imageNum -1);
         let fileRead = new FileReader();
         fileRead.onload = function(){
             setPreviewImg(fileRead.result);
         };
-
-        fileRead.readAsDataURL(postImg[imageNum - 1]);
-        setImageNum(imageNum - 1);
+        
+        fileRead.readAsDataURL(postImg[imageNum -1]);
+        setImageNum(imageNum -1);
     }
     const nextImage = () => {
+        setPicImgInd(imageNum +1);
         let fileRead = new FileReader();
         fileRead.onload = function(){
             setPreviewImg(fileRead.result);
         };
-
-        fileRead.readAsDataURL(postImg[imageNum + 1]);
-        setImageNum(imageNum + 1);
+        
+        fileRead.readAsDataURL(postImg[imageNum +1]);
+        setImageNum(imageNum +1);
     }
     // 사진 미리보기 -------------------------------//
 
@@ -176,6 +188,7 @@ const RecBoardCp = () => {
                     formData.append("file", postImg[i]);
                 }
                 formData.append("boardNo", boardNo);
+                formData.append("logoInd", picImgInd);
                 response = await auth.boardImgWrite(formData);
                 const statusImgUpload = response.status;
                 closeWrite();
@@ -226,35 +239,62 @@ const RecBoardCp = () => {
             }
             if (response.data.length < 4) {
                 for (let i = 0; i < response.data.length; i++) {
-                    $(`#rboard_list_item${itemNum}`).append(
-                        `<div class="rboard_item" id="${response.data[i].boardNo}">
-                            <img src="/images/default.jpg" />
-                            <h2>${response.data[i].boardTitle}</h2>
-                        </div>`
-                    )
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "") {
+                        $(`#rboard_list_item${itemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${itemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
                     $(`#${response.data[i].boardNo}`).click(() => {
                         showBoard(response.data[i].boardNo);
                     });
                 }
             } else {
                 for (let i = 0; i < 3; i++) {
-                    $(`#rboard_list_item${itemNum}`).append(
-                        `<div class="rboard_item" id="${response.data[i].boardNo}">
-                            <img src="/images/default.jpg" />
-                            <h2>${response.data[i].boardTitle}</h2>
-                        </div>`
-                    )
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "") {
+                        $(`#rboard_list_item${itemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${itemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
                     $(`#${response.data[i].boardNo}`).click(() => {
                         showBoard(response.data[i].boardNo);
                     });
                 }
                 for (let i = 3; i < response.data.length; i++) {
-                    $(`#rboard_list_item${itemNum+1}`).append(
-                        `<div class="rboard_item" id="${response.data[i].boardNo}">
-                            <img src="/images/default.jpg" />
-                            <h2>${response.data[i].boardTitle}</h2>
-                        </div>`
-                    )
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "") {
+                        $(`#rboard_list_item${itemNum+1}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${itemNum+1}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
                     $(`#${response.data[i].boardNo}`).click(() => {
                         showBoard(response.data[i].boardNo);
                     });
@@ -316,6 +356,10 @@ const RecBoardCp = () => {
                 </div>
                 <div className="rboard_write_button">
                     <input type="button" value="글 작성" onClick={() => {write_new_board()}} />
+                    <input type="button" value="대표이미지" onClick={ () => {
+                        setPicImgInd(imageNum);
+                        Swal.alert("대표이미지 설정 완료 !", "현재 미리보기 이미지를 대표 이미지로 설정했습니다.", "success");
+                    }} />
                 </div>
             </div>
             <div className="rboard_container">

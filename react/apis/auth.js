@@ -72,7 +72,7 @@ export const boardLike = async (boardNo, userNo) => {
 
 // 좋아요 누른 게시글
 export const userLikeBoards = async (userId) => {
-    const response = await api.get(`/api/board/likeBoard?id=${userId}`);
+    const response = await api.get(`/api/board/likeBoard/${userId}`);
     return response;
 }
 

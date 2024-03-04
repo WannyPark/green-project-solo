@@ -159,6 +159,7 @@ const LoginContextProvider = ({ children }) => {
     const logout = (force=false) => {
         if (force) {
             logoutSetting();
+            localStorage.removeItem("userInfo");
             navigate("/");
             return ;
         }

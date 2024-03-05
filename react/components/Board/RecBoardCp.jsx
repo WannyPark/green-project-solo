@@ -18,16 +18,17 @@ const RecBoardCp = () => {
 
     // 글 자세히 보기 ---------------------------------
     const showBoard = async (num) => { // 글 눌렀을 때 실행되는 함수
-        console.log(num);
-        console.log(isLogin);
-        console.log(userInfo);
+        const user = JSON.parse(localStorage.getItem("userInfo"));
+        const login = localStorage.getItem("isLogin");
+        console.log(user);
+        console.log(login);
         setShowBoardNum(num);
         const response = await auth.boardInfo(num);
         const resImgs = await auth.boardImages(num);
         let likeBoards;
-        if (isLogin) {
+        if (login) {
             console.log("좋아요 가져오기!!");
-            likeBoards = await auth.userLikeBoards(userInfo.no);
+            likeBoards = await auth.userLikeBoards(user.no);
             console.log(likeBoards);
             for (let i = 0; i < likeBoards.data.length; i++) {
                 if (likeBoards.data[i].boardNo == num) {
@@ -35,7 +36,7 @@ const RecBoardCp = () => {
                     break ;
                 }
             }
-            if (response.data.userNo != userInfo.no) {
+            if (response.data.userNo != user.no) {
                 $(".rboard_show_modi").css("display", "none");
                 $(".rboard_show_delete").css("display", "none");
             }
@@ -199,14 +200,14 @@ const RecBoardCp = () => {
                     const response = await auth.boardDelete(boardNo);
                     if (response.status == 200) {
                         Swal.alert("글 작성 오류!", "이미지 업로드 과정에서 오류가 발생했습니다.", "error");
+                        return ;
                     } else {
                         Swal.alert("글 작성 오류!", "게시글 등록은 성공했으나 이미지 등록에 실패했습니다.", "error");
+                        return ;
                     }
                 }
-            } else {
-                Swal.alert("글 작성 실패!", "다시 시도해주세요.", "error");
-                return ;
             }
+            Swal.alert("글 작성 성공!", "글 작성에 성공했습니다.", "success");
         } catch {
             Swal.alert("글 작성 실패!", "다시 시도해주세요.", "error");
             return ;
@@ -217,13 +218,214 @@ const RecBoardCp = () => {
     // 더보기 버튼 클릭 시 ---------------------------------
     const addItem = () => {
         setPage(page+1);
-    };
+    }
     // 더보기 버튼 클릭 시 ---------------------------------//
+
+    // 검색 기능 ---------------------------------------------
+    const [searchPage, setSearchPage] = useState(0);
+    const [searchTitle, setSearchTitle] = useState("null");
+    const [searchName, setSearchName] = useState("null");
+    const [searchLoc1, setSearchLoc1] = useState("null");
+    const [searchLoc2, setSearchLoc2] = useState("null");
+    const [searchItemNum, setSearchItemNum] = useState(0);
+    const [searchType, setSearchType] = useState(false);
+    const search = async () => {
+        if ($("#rboard_search_val").val().length == 0 && $("#rboard_search_name").val().length == 0 && $("#sido2").val() == "시/도 선택" && $("#rboard_search_val").val().length == 0) {
+            setSearchPage(0)
+            setSearchType(false);
+            setSearchTitle("null");
+            setSearchName("null");
+            setSearchLoc1("null");
+            setSearchLoc2("null");
+            window.location.reload();
+            return ;
+        }
+        let title = $("#rboard_search_val").val();
+        let name = $("#rboard_search_name").val();
+        let loc1 = $("#sido2").val();
+        let loc2 = $("#gugun2").val();
+        if ($("#rboard_search_val").val().length == 0) title = null;
+        if ($("#rboard_search_name").val().length == 0) name = null;
+        if ($("#sido2").val() == "시/도 선택") loc1 = null;
+        if ($("#gugun2").val().length == 0 || $("#gugun2").val() == "구/군 선택") loc2 = null;
+        setSearchTitle(title);
+        setSearchName(name);
+        setSearchLoc1(loc1);
+        setSearchLoc2(loc2);
+        const data = {
+            title: title,
+            name: name,
+            loc1: loc1,
+            loc2: loc2,
+        }
+        try {
+            const response = await auth.getBoardSearch(0, data);
+            console.log(response);
+            setSearchType(true);
+            $(".rboard_list_item").remove();
+            for (let i = searchItemNum; i < searchItemNum+2; i++) {
+                $(".rboard_item_plus_bnt").before(
+                    `<div class="rboard_list_item" id="rboard_list_item${i}"></div>`
+                );
+            }
+            if (response.data.length < 4) {
+                for (let i = 0; i < response.data.length; i++) {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
+                        $(`#rboard_list_item${searchItemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${searchItemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
+                    $(`#${response.data[i].boardNo}`).click(() => {
+                        showBoard(response.data[i].boardNo);
+                    });
+                }
+            } else {
+                for (let i = 0; i < 3; i++) {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
+                        $(`#rboard_list_item${searchItemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${searchItemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
+                    $(`#${response.data[i].boardNo}`).click(() => {
+                        showBoard(response.data[i].boardNo);
+                    });
+                }
+                for (let i = 3; i < response.data.length; i++) {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
+                        $(`#rboard_list_item${searchItemNum+1}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${searchItemNum+1}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
+                    $(`#${response.data[i].boardNo}`).click(() => {
+                        showBoard(response.data[i].boardNo);
+                    });
+                }
+            }
+            setSearchItemNum(searchItemNum + 2);
+        } catch {
+            Swal.alert("에러 발생 !", "게시물을 불러오는 중 에러가 발생했습니다.", "error");
+            return ;
+        }
+    }
+    const searchPlus = async () => {
+        const data = {
+            title: searchTitle,
+            name: searchName,
+            loc1: searchLoc1,
+            loc2: searchLoc2,
+        }
+        try {
+            const response = await auth.getBoardSearch(searchPage+1, data);
+            console.log(response);
+            for (let i = searchItemNum; i < searchItemNum+2; i++) {
+                $(".rboard_item_plus_bnt").before(
+                    `<div class="rboard_list_item" id="rboard_list_item${i}"></div>`
+                );
+            }
+            if (response.data.length < 4) {
+                for (let i = 0; i < response.data.length; i++) {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
+                        $(`#rboard_list_item${searchItemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${searchItemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
+                    $(`#${response.data[i].boardNo}`).click(() => {
+                        showBoard(response.data[i].boardNo);
+                    });
+                }
+            } else {
+                for (let i = 0; i < 3; i++) {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
+                        $(`#rboard_list_item${searchItemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${searchItemNum}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
+                    $(`#${response.data[i].boardNo}`).click(() => {
+                        showBoard(response.data[i].boardNo);
+                    });
+                }
+                for (let i = 3; i < response.data.length; i++) {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
+                        $(`#rboard_list_item${searchItemNum+1}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/default.jpg" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    } else {
+                        $(`#rboard_list_item${searchItemNum+1}`).append(
+                            `<div class="rboard_item" id="${response.data[i].boardNo}">
+                                <img src="/images/${response.data[i].boardSaveImageName}.${response.data[i].boardSaveImageExt}" />
+                                <h2>${response.data[i].boardTitle}</h2>
+                            </div>`
+                        )
+                    }
+                    $(`#${response.data[i].boardNo}`).click(() => {
+                        showBoard(response.data[i].boardNo);
+                    });
+                }
+            }
+        } catch {
+            Swal.alert("에러 발생 !", "게시물을 불러오는 중 에러가 발생했습니다.", "error");
+            return ;
+        }
+    }
+    // 검색 기능 ---------------------------------------------//
 
     useEffect(() => {
         SelectBox();
         $(".rboard_container").css("display", "flex").hide().fadeIn(500);
-    }, []);
+    }, [])
 
     useEffect(() => {
         const requestList = async () => {
@@ -239,7 +441,7 @@ const RecBoardCp = () => {
             }
             if (response.data.length < 4) {
                 for (let i = 0; i < response.data.length; i++) {
-                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "") {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
                         $(`#rboard_list_item${itemNum}`).append(
                             `<div class="rboard_item" id="${response.data[i].boardNo}">
                                 <img src="/images/default.jpg" />
@@ -260,7 +462,7 @@ const RecBoardCp = () => {
                 }
             } else {
                 for (let i = 0; i < 3; i++) {
-                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "") {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
                         $(`#rboard_list_item${itemNum}`).append(
                             `<div class="rboard_item" id="${response.data[i].boardNo}">
                                 <img src="/images/default.jpg" />
@@ -280,7 +482,7 @@ const RecBoardCp = () => {
                     });
                 }
                 for (let i = 3; i < response.data.length; i++) {
-                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "") {
+                    if (response.data[i].boardSaveImageName === "" && response.data[i].boardSaveImageExt === "" || response.data[i].boardSaveImageName == null && response.data[i].boardSaveImageExt === null) {
                         $(`#rboard_list_item${itemNum+1}`).append(
                             `<div class="rboard_item" id="${response.data[i].boardNo}">
                                 <img src="/images/default.jpg" />
@@ -303,7 +505,7 @@ const RecBoardCp = () => {
             setItemNum(itemNum+2);
         } 
         requestList();
-    }, [page]);
+    }, [page])
 
     return (
         <>
@@ -364,21 +566,28 @@ const RecBoardCp = () => {
             </div>
             <div className="rboard_container">
                 <div className="rboard_list">
-                    <div className="rboard_item_plus_bnt">
-                        <button onClick={() => {addItem()}}>더보기</button>
-                    </div>
+                    {
+                        searchType ?
+                        <div className="rboard_item_plus_bnt">
+                            <button onClick={() => {searchPlus()}}>더보기</button>
+                        </div>
+                        :
+                        <div className="rboard_item_plus_bnt">
+                            <button onClick={() => {addItem()}}>더보기</button>
+                        </div>
+                    }
                 </div>
                 <div className="rboard_menu">
                     <div className="rboard_menu_title">
-                        <input type="text" className="rboard_menu_input" placeholder="검색어를 입력해주세요." />
+                        <input type="text" className="rboard_menu_input" id="rboard_search_val" placeholder="검색어를 입력해주세요." />
                     </div>
                     <div className="rboard_menu_writer">
-                        <input type="text" className="rboard_menu_input" placeholder="작성자를 입력해주세요." />
+                        <input type="text" className="rboard_menu_input" id="rboard_search_name" placeholder="작성자를 입력해주세요." />
                     </div>
                     <div className="rboard_menu_loc">
                         <select name="sido1" id="sido2"></select>
-                        <select name="gugun1" id="gugun1" className="menu_gugun"></select>
-                        <input type="button" className="rboard_menu_search" value="검색" />
+                        <select name="gugun1" id="gugun2" className="menu_gugun"></select>
+                        <input type="button" className="rboard_menu_search" value="검색" onClick={() => {search()}} />
                     </div>
                     {
                         isLogin &&

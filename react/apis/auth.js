@@ -36,6 +36,12 @@ export const getBoard = async (page) => {
     return response;
 }
 
+// 게시물 요청 (검색 o)
+export const getBoardSearch = async (page, data) => {
+    const response = await api.get(`/api/board/getSearch?page=${page}&title=${data.title}&name=${data.name}&loc1=${data.loc1}&loc2=${data.loc2}`);
+    return response;
+}
+
 // 게시물 등록
 export const boardWrite = async (data) => {
     const response = await api.post(`/api/board/write`, data);

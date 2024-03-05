@@ -153,13 +153,15 @@ const LoginContextProvider = ({ children }) => {
             if (role == "ROLE_ADMIN") updatedRoles.isAdmin = true;
         })
         setRoles(updatedRoles);
+        localStorage.setItem("userInfo", JSON.stringify(updateUserInfo));
+        localStorage.setItem("isLogin", true);
     }
 
     // 로그아웃
     const logout = (force=false) => {
         if (force) {
             logoutSetting();
-            localStorage.removeItem("userInfo");
+            localStorage.clear();
             navigate("/");
             return ;
         }
@@ -168,6 +170,7 @@ const LoginContextProvider = ({ children }) => {
             if (result.isConfirmed) {
                 // 로그아웃 세팅
                 logoutSetting();
+                localStorage.clear();
                 // 메인 페이지 이동
                 navigate("/");
             }

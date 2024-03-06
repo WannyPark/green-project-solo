@@ -82,6 +82,12 @@ export const userLikeBoards = async (userId) => {
     return response;
 }
 
+// 게시물 수정 요청
+export const boardModify = async (data) => {
+    const response = await api.post(`/api/board/modify`, data);
+    return response;
+}
+
 // 게시물 삭제 요청
 export const boardDelete = async (boardNo) => {
     const response = await api.delete(`/api/board/${boardNo}`);

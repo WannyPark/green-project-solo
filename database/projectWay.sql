@@ -37,14 +37,9 @@ CREATE TABLE IF NOT EXISTS `board` (
   PRIMARY KEY (`board_no`),
   KEY `FK1_user_id` (`user_no`) USING BTREE,
   CONSTRAINT `FK1_user_id` FOREIGN KEY (`user_no`) REFERENCES `user` (`NO`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='맛집추천 게시판\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='맛집추천 게시판\r\n';
 
--- 테이블 데이터 studyjwt.board:~0 rows (대략적) 내보내기
-DELETE FROM `board`;
-INSERT INTO `board` (`board_no`, `user_no`, `board_title`, `board_desc`, `board_loc1`, `board_loc2`, `board_like`, `board_origin_image_name`, `board_save_image_name`, `board_save_image_ext`, `board_save_image_size`, `board_reg_date`, `board_upd_date`) VALUES
-	(46, 1, '맛집이네요~', '맛집입니다~', '서울특별시', '강남구', 0, NULL, NULL, NULL, NULL, '2024-03-05 08:42:34', '2024-03-05 08:42:34'),
-	(47, 1, '맛집이에요요요요', '맛집이에에에에에요', '서울특별시', '강남구', 0, 'pexels-john-finkelstein-1630588', '17096285806766468', 'jpg', 866556, '2024-03-05 08:49:40', '2024-03-05 08:49:40'),
-	(48, 1, '진짜 맛있네', '진짜 맛있어요 이집', '서울특별시', '강남구', 0, 'pexels-jang-‘s-🍂-699953', '17096287139506304', 'jpg', 553652, '2024-03-05 08:51:53', '2024-03-05 08:51:53');
+-- 내보낼 데이터가 선택되어 있지 않습니다.
 
 -- 테이블 studyjwt.board_images 구조 내보내기
 CREATE TABLE IF NOT EXISTS `board_images` (
@@ -57,11 +52,7 @@ CREATE TABLE IF NOT EXISTS `board_images` (
   CONSTRAINT `FK1_board_no` FOREIGN KEY (`board_no`) REFERENCES `board` (`board_no`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='게시물 이미지 테이블\r\n';
 
--- 테이블 데이터 studyjwt.board_images:~0 rows (대략적) 내보내기
-DELETE FROM `board_images`;
-INSERT INTO `board_images` (`board_no`, `board_origin_image_name`, `board_save_image_name`, `board_save_image_ext`, `board_save_image_size`) VALUES
-	(47, 'pexels-john-finkelstein-1630588', '17096285806766468', 'jpg', 866556),
-	(48, 'pexels-jang-‘s-🍂-699953', '17096287139506304', 'jpg', 553652);
+-- 내보낼 데이터가 선택되어 있지 않습니다.
 
 -- 테이블 studyjwt.user 구조 내보내기
 CREATE TABLE IF NOT EXISTS `user` (
@@ -78,11 +69,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `NAME` (`NAME`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='회원';
 
--- 테이블 데이터 studyjwt.user:~2 rows (대략적) 내보내기
-DELETE FROM `user`;
-INSERT INTO `user` (`NO`, `USER_ID`, `USER_PW`, `NAME`, `EMAIL`, `REG_DATE`, `UPD_DATE`, `ENABLED`) VALUES
-	(1, 'user', '$2a$10$3wSx25hIDcyfRPpDI/O4veUHL4OOqdP1qoqzTo5fBGLl6unCFkfz6', 'user', 'user@naver.com', '2024-02-21 02:40:34', '2024-02-21 02:40:34', 1),
-	(2, 'admin', '$2a$10$OnxnnnmF7IEHllVVDKnQqenOYXFZHmnxWNXv3hU2lSrJgoLvDLyPi', '관리자', 'admin@gmail.com', '2024-02-21 02:40:39', '2024-02-21 02:40:39', 1);
+-- 내보낼 데이터가 선택되어 있지 않습니다.
 
 -- 테이블 studyjwt.user_auth 구조 내보내기
 CREATE TABLE IF NOT EXISTS `user_auth` (
@@ -92,16 +79,7 @@ CREATE TABLE IF NOT EXISTS `user_auth` (
   PRIMARY KEY (`auth_no`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 테이블 데이터 studyjwt.user_auth:~7 rows (대략적) 내보내기
-DELETE FROM `user_auth`;
-INSERT INTO `user_auth` (`auth_no`, `user_id`, `auth`) VALUES
-	(1, 'user', 'ROLE_USER'),
-	(2, 'admin', 'ROLE_USER'),
-	(3, 'admin', 'ROLE_ADMIN'),
-	(6, 'test1', 'ROLE_USER'),
-	(7, 'test2', 'ROLE_USER'),
-	(8, 'test3', 'ROLE_USER'),
-	(9, 'test4', 'ROLE_USER');
+-- 내보낼 데이터가 선택되어 있지 않습니다.
 
 -- 테이블 studyjwt.user_like_board 구조 내보내기
 CREATE TABLE IF NOT EXISTS `user_like_board` (
@@ -113,8 +91,7 @@ CREATE TABLE IF NOT EXISTS `user_like_board` (
   CONSTRAINT `user_no` FOREIGN KEY (`user_no`) REFERENCES `user` (`NO`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='좋아요 누른 게시물\r\n';
 
--- 테이블 데이터 studyjwt.user_like_board:~0 rows (대략적) 내보내기
-DELETE FROM `user_like_board`;
+-- 내보낼 데이터가 선택되어 있지 않습니다.
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

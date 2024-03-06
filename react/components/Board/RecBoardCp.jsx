@@ -70,6 +70,10 @@ const RecBoardCp = () => {
     const closeShow = () => { // 글 자세히 보기 창 닫기
         setShowImgs([]);
         setShowImgInd(0);
+        $(".rboard_show_t").attr("readonly", true);
+        $(".rboard_show_d").attr("readonly", true);
+        $(".rboard_show_modi_submit").css("display", "none");
+        $(".rboard_show_modi_cancle").css("display", "none");
         $(".rboard_show_top img").attr("src", `/images/default.jpg`);
         $(".rboard_show_like").attr("disabled", false);
         $(".rboard_container").css("opacity", "1"); // 배경 흐릿한 효과 제거
@@ -195,6 +199,7 @@ const RecBoardCp = () => {
                 closeWrite();
                 if (statusImgUpload == 200) {
                     Swal.alert("글 작성 성공!", "글 작성에 성공했습니다.", "success");
+                    window.location.reload();
                     return ;
                 } else {
                     const response = await auth.boardDelete(boardNo);
@@ -422,6 +427,78 @@ const RecBoardCp = () => {
     }
     // 검색 기능 ---------------------------------------------//
 
+    // 글 수정 기능 ---------------------------------------------
+    const [originBoardTitle, setOriginBoardTitle] = useState("");
+    const [originBoardDesc, setOriginBoardDesc] = useState("");
+    const onModifyButton = () => {
+        setOriginBoardTitle($(".rboard_show_t").val());
+        setOriginBoardDesc($(".rboard_show_d").val());
+        $(".rboard_show_modi_submit").css("display", "block");
+        $(".rboard_show_modi_cancle").css("display", "block");
+        $(".rboard_show_t").attr("readonly", false);
+        $(".rboard_show_d").attr("readonly", false);
+    }
+    const modifyBoard = async () => {
+        const data = {
+            boardNo: showBoardNum,
+            boardTitle: $(".rboard_show_t").val(),
+            boardDesc: $(".rboard_show_d").val(),
+        }
+        try {
+            const response = await auth.boardModify(data);
+            if (response.status == 200) {
+                Swal.alert("글 수정 성공 !", "글 수정을 성공했습니다 !", "success");
+                closeShow();
+                showBoard(showBoardNum);
+                return ;
+            } else {
+                Swal.alert("글 수정 실패 !", "글 수정을 실패했습니다 !", "error");
+                closeShow();
+                showBoard(showBoardNum);
+                return ;
+            }
+        } catch (error) {
+            Swal.alert("글 수정 실패 !", "글 수정을 실패했습니다 !", "error");
+            closeShow();
+            showBoard(showBoardNum);
+            return ;
+        }
+    }
+    const cancleModify = () => {
+        $(".rboard_show_t").attr("readonly", true);
+        $(".rboard_show_d").attr("readonly", true);
+        $(".rboard_show_t").val(originBoardTitle);
+        $(".rboard_show_d").val(originBoardDesc);
+        $(".rboard_show_modi_submit").css("display", "none");
+        $(".rboard_show_modi_cancle").css("display", "none");
+    }
+    // 글 수정 기능 ---------------------------------------------//
+
+    // 글 삭제 기능 ---------------------------------------------
+    const deleteBoard = async () => {
+        try {
+            Swal.confirm(`로그아웃 하시겠습니까?`, `로그아웃을 진행합니다.`, `warning`, async (result) => {
+                if (result.isConfirmed) {
+                    const response = await auth.boardDelete(showBoardNum);
+                    if (response.status == 200) {
+                        window.location.reload();
+                        Swal.alert("글 삭제 성공 !", "글 삭제를 성공했습니다 !", "success");
+                        return ;
+                    } else {
+                        window.location.reload();
+                        Swal.alert("글 삭제 실패 !", "글 삭제를 실패했습니다 !", "error");
+                        return ;
+                    }
+                }
+            })
+        } catch (error) {
+            window.location.reload();
+            Swal.alert("글 삭제 실패 !", "글 삭제를 실패했습니다 !", "error");
+            return ;
+        }
+    }
+    // 글 삭제 기능 ---------------------------------------------//
+
     useEffect(() => {
         SelectBox();
         $(".rboard_container").css("display", "flex").hide().fadeIn(500);
@@ -526,8 +603,10 @@ const RecBoardCp = () => {
                     isLogin &&
                     <div className="rboard_show_buts">
                         <button className="rboard_show_like" onClick={likeUp}>❤️</button>
-                        <button className="rboard_show_modi">수정</button>
-                        <button className="rboard_show_delete">삭제</button>
+                        <button className="rboard_show_modi" onClick={onModifyButton}>수정</button>
+                        <button className="rboard_show_delete" onClick={deleteBoard}>삭제</button>
+                        <button className="rboard_show_modi_submit" onClick={modifyBoard}>완료</button>
+                        <button className="rboard_show_modi_cancle" onClick={cancleModify}>취소</button>
                     </div>
                 }
             </div>

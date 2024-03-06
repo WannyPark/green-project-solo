@@ -76,9 +76,24 @@
     background-color: pink;
 }
 
+.rboard_show_modi_submit,
+.rboard_show_modi_cancle {
+    display: none;
+    border: none;
+    background-color: #FFEEE4;
+    margin: 10px;
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
 .rboard_show_like:hover,
 .rboard_show_modi:hover,
-.rboard_show_delete:hover {
+.rboard_show_delete:hover,
+.rboard_show_modi_submit:hover,
+.rboard_show_modi_cancle:hover {
     scale: 1.2;
 }
 

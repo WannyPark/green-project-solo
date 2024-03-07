@@ -93,3 +93,9 @@ export const boardDelete = async (boardNo) => {
     const response = await api.delete(`/api/board/${boardNo}`);
     return response;
 }
+
+// 홈 전국 맛집추천 게시글 TOP5 요청
+export const homeBoardAllLoc = async () => {
+    const response = await api.get(`/api/home/all`);
+    return response;
+}

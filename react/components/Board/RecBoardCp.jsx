@@ -477,16 +477,16 @@ const RecBoardCp = () => {
     // 글 삭제 기능 ---------------------------------------------
     const deleteBoard = async () => {
         try {
-            Swal.confirm(`로그아웃 하시겠습니까?`, `로그아웃을 진행합니다.`, `warning`, async (result) => {
+            Swal.confirm(`글을 삭제 하시겠습니까?`, `글 삭제를 진행합니다.`, `warning`, async (result) => {
                 if (result.isConfirmed) {
                     const response = await auth.boardDelete(showBoardNum);
                     if (response.status == 200) {
-                        window.location.reload();
                         Swal.alert("글 삭제 성공 !", "글 삭제를 성공했습니다 !", "success");
+                        window.location.reload();
                         return ;
                     } else {
-                        window.location.reload();
                         Swal.alert("글 삭제 실패 !", "글 삭제를 실패했습니다 !", "error");
+                        window.location.reload();
                         return ;
                     }
                 }
